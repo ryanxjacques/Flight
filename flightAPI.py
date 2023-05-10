@@ -9,31 +9,34 @@ import random
 import json
 
 #======================== UNCOMMENT TO ACCESS API DATA ===============================
-# url = "http://api.aviationstack.com/v1/flights"
-# params = {
-#     "access_key": "71b8a3f1273c8d7ce386086d7bef9f3b"
-# }
-#
-# api_result = requests.get(url, params=params)
-#
-#
-# # check if the request was successful
-# if api_result.status_code == 200:
-#     print("Request successful!")
-#     # extract the response data as a dictionary
-#     api_response = api_result.json()
+url = "http://api.aviationstack.com/v1/flights"
+
+params = {
+    "access_key": "71b8a3f1273c8d7ce386086d7bef9f3b"
+}
+
+api_result = requests.get(url, params=params)
+
+
+# check if the request was successful
+if api_result.status_code == 200:
+    print("Request successful!")
+    # extract the response data as a dictionary
+    api_response = api_result.json()
 # ======================== UNCOMMENT TO ACCESS API DATA ===============================
 
 
 
 #======================== UNCOMMENT TO SAVE NEW API DATA ===============================
-    # Save the api_response to a file to limit api calls for testing
-    # with open("api_response.json", "w") as outfile:
-    #     json.dump(api_response, outfile, indent=4)
+    with open("api_response.json", "w") as outfile:
+        json.dump(api_response, outfile, indent=4)
 #======================== UNCOMMENT TO SAVE NEW API DATA ===============================
 
-with open("api_response.json", "r") as f:
-    api_response = json.load(f)
+
+#======================== UNCOMMENT TO INTERACT WITH JSON FILE ===============================
+# with open("api_response.json", "r") as f:
+#     api_response = json.load(f)
+# ======================== UNCOMMENT TO INTERACT WITH JSON FILE ===============================
     # get today's date (timezone - aware)
     today = datetime.now()
     today = today.replace(tzinfo=timezone.utc)
@@ -60,10 +63,6 @@ with open("api_response.json", "r") as f:
 
 
 # ======================== UNCOMMENT TO ACCESS API DATA ===============================
-# else:
-#     print(f"Error: {api_result.status_code} -- {api_result.reason}")
+else:
+    print(f"Error: {api_result.status_code} -- {api_result.reason}")
 # ======================== UNCOMMENT TO ACCESS API DATA ===============================
-
-
-
-
