@@ -4,3 +4,5 @@
 *.iml
 *.json
 /.idea/*
+/.venv/*
+db.sqlite3
