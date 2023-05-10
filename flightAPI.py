@@ -28,8 +28,8 @@ if api_result.status_code == 200:
 
 
 #======================== UNCOMMENT TO SAVE NEW API DATA ===============================
-    with open("api_response.json", "w") as outfile:
-        json.dump(api_response, outfile, indent=4)
+    # with open("api_response.json", "w") as outfile:
+    #     json.dump(api_response, outfile, indent=4)
 #======================== UNCOMMENT TO SAVE NEW API DATA ===============================
 
 
