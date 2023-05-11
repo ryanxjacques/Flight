@@ -17,8 +17,10 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from flight import views
+from flight.views import get_flight
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', views.index)
+    #path('', views.index),
+    path('', get_flight, name='get_flight'),
 ]
