@@ -41,8 +41,8 @@ def generate_flight() -> str:
 
 
     #======================== UNCOMMENT TO INTERACT WITH JSON FILE ===============================
-    # with open("../api_response.json", "r") as f:
-    #     api_response = json.load(f)
+    with open("../api_response.json", "r") as f:
+        api_response = json.load(f)
     # ======================== UNCOMMENT TO INTERACT WITH JSON FILE ===============================
         # get today's date (timezone - aware)
         today = datetime.now()
@@ -57,11 +57,20 @@ def generate_flight() -> str:
         # only choose flights that are later than right now
         departure_time = datetime.strptime(flight['departure']['scheduled'], date_format)
 
-        while  departure_time < today:
-            print("Had to choose another one")
+        while departure_time < today:
+            # choose another flight if it isn't later
             flight = random.choice(api_response['data'])
 
-        formatted_time = departure_time.strftime('%m-%d-%Y at %I:%M %p')
+        arrival_time = datetime.strptime(flight['arrival']['scheduled'], date_format)
+
+        formatted_departure_time = departure_time.strftime('%m-%d-%Y at %I:%M %p')
+
+        formatted_arrival_time = departure_time.strftime('%m-%d-%Y at %I:%M %p')
+
+        json_string = f"{{\"arrival\": {{ \"airport\": {flight['arrival']['airport']}, " \
+                      f"\"iata\"{flight['arrival']['iata']}"
+        
+        print(json_string)
 
 
         return (f"Congrats, you're going to {flight['arrival']['airport']} ({flight['arrival']['iata']})"

@@ -1,5 +1,4 @@
 from django.http import HttpResponse
-from django.http import JsonResponse
 from flight.flightAPI import generate_flight
 
 def index(request):
