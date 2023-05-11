@@ -56,11 +56,12 @@ def generate_flight() -> str:
 
 
         # only choose flights that are later than right now
-        departure_time = datetime.strptime(flight['departure']['scheduled'], date_format)
 
-        while departure_time < today:
+        while datetime.strptime(flight['departure']['scheduled'], date_format) < today:
             # choose another flight if it isn't later
             flight = random.choice(api_response['data'])
+
+        departure_time = datetime.strptime(flight['departure']['scheduled'], date_format)
 
         arrival_time = datetime.strptime(flight['arrival']['scheduled'], date_format)
 
