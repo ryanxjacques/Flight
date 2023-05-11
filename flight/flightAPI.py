@@ -16,20 +16,20 @@ def generate_flight() -> str:
     """
 
     #======================== UNCOMMENT TO ACCESS API DATA ===============================
-    url = "http://api.aviationstack.com/v1/flights"
-
-    params = {
-        "access_key": "71b8a3f1273c8d7ce386086d7bef9f3b"
-    }
-
-    api_result = requests.get(url, params=params)
-
-
-    # check if the request was successful
-    if api_result.status_code == 200:
-        print("Request successful!")
-        # extract the response data as a dictionary
-        api_response = api_result.json()
+    # url = "http://api.aviationstack.com/v1/flights"
+    #
+    # params = {
+    #     "access_key": "71b8a3f1273c8d7ce386086d7bef9f3b"
+    # }
+    #
+    # api_result = requests.get(url, params=params)
+    #
+    #
+    # # check if the request was successful
+    # if api_result.status_code == 200:
+    #     print("Request successful!")
+    #     # extract the response data as a dictionary
+    #     api_response = api_result.json()
     # ======================== UNCOMMENT TO ACCESS API DATA ===============================
 
 
@@ -41,7 +41,7 @@ def generate_flight() -> str:
 
 
     #======================== UNCOMMENT TO INTERACT WITH JSON FILE ===============================
-    with open("../api_response.json", "r") as f:
+    with open("api_response.json", "r") as f:
         api_response = json.load(f)
     # ======================== UNCOMMENT TO INTERACT WITH JSON FILE ===============================
         # get today's date (timezone - aware)
@@ -54,6 +54,7 @@ def generate_flight() -> str:
         # format of the departure date
         date_format = "%Y-%m-%dT%H:%M:%S%z"
 
+
         # only choose flights that are later than right now
         departure_time = datetime.strptime(flight['departure']['scheduled'], date_format)
 
@@ -65,21 +66,25 @@ def generate_flight() -> str:
 
         formatted_departure_time = departure_time.strftime('%m-%d-%Y at %I:%M %p')
 
-        formatted_arrival_time = departure_time.strftime('%m-%d-%Y at %I:%M %p')
+        formatted_arrival_time = arrival_time.strftime('%m-%d-%Y at %I:%M %p')
 
-        json_string = f"{{\"arrival\": {{ \"airport\": {flight['arrival']['airport']}, " \
-                      f"\"iata\"{flight['arrival']['iata']}"
-        
+        json_string = f"{{\"arrival\": {{ \"airport\": \"{flight['arrival']['airport']}\", " \
+                      f"\"iata\": \"{flight['arrival']['iata']}\", \"time\": \"{formatted_arrival_time}\"}}, " \
+                      f"\"departure\": {{ \"airport\": \"{flight['departure']['airport']}\", " \
+                      f"\"iata\": \"{flight['departure']['iata']}\", \"time\": \"{formatted_departure_time}\"}}}}"
+
         print(json_string)
 
 
         return (f"Congrats, you're going to {flight['arrival']['airport']} ({flight['arrival']['iata']})"
               f" via {flight['departure']['airport']} ({flight['departure']['iata']})!\n"
-              f"Departure time: {formatted_time}")
+              f"Departure time: {formatted_departure_time}")
 
 
 
     # ======================== UNCOMMENT TO ACCESS API DATA ===============================
-    else:
-        print(f"Error: {api_result.status_code} -- {api_result.reason}")
+    # else:
+    #     print(f"Error: {api_result.status_code} -- {api_result.reason}")
     # ======================== UNCOMMENT TO ACCESS API DATA ===============================
+
+generate_flight()
