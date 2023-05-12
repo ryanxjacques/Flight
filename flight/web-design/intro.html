@@ -1,10 +1,11 @@
+{% load static %}
 <!DOCTYPE html>
 <html>
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href='https://fonts.googleapis.com/css?family=Lexend' rel='stylesheet'>
-    <link rel="stylesheet" type="text/css" href="css/intro.css">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/intro.css' %}">
     <title>Flight Finder</title>
   </head>
   <body>
@@ -13,8 +14,8 @@
     <a href="main.html">
       <div class="earth-container">
         <div class="photo-container">
-          <img src="graphics/earth-label.png" alt="earth" class="earth">
-          <img src="graphics/plane-circle.png" alt="photo" class="plane-circle">
+          <img src="{% static 'graphics/earth-label.png' %}" alt="earth" class="earth">
+          <img src="{% static 'graphics/plane-circle.png' %}" alt="photo" class="plane-circle">
 
         </div>
       </div>
