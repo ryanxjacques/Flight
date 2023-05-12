@@ -1,5 +1,6 @@
-var map_image_DOM_element = new Image();
-map_image_DOM_element.src = "../img/airports.png";
+
+
+var map_image_DOM_element = document.getElementById("map_image")
 var canvas = document.getElementById("canvas");
 var ctx = canvas.getContext("2d");
 

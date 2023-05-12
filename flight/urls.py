@@ -14,17 +14,21 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
-from django.contrib import admin
-from django.urls import path
-from flight import views
-from flight.views import get_flight
 from django.conf import settings
 from django.conf.urls.static import static
+from django.urls import path
+from django.views.generic.base import RedirectView
+
+from flight import views
+from flight.views import get_flight
 
 urlpatterns = [
     path('', views.intro_view, name='intro'),
     path('main.html', views.main_view, name='main'),
     path('get_flight/', get_flight, name='get_flight'),
+    path('static/graphics/airports.png', RedirectView.as_view(url=settings.STATIC_URL +
+                                                                  'graphics/airports.png', permanent=True))
+
 ]
 
 if settings.DEBUG:
