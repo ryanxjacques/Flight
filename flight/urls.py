@@ -17,8 +17,15 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from flight import views
+from flight.views import get_flight
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('', views.index)
+    path('', views.intro_view, name='intro'),
+    path('main.html', views.main_view, name='main'),
+    path('get_flight/', get_flight, name='get_flight'),
 ]
+
+if settings.DEBUG:
+    urlpatterns + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
