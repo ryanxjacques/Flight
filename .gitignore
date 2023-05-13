@@ -174,3 +174,5 @@ flight/__pycache__/*
 
 flight/__pycache__/
 
+.DS_Store
+
