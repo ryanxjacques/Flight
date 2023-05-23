@@ -1,0 +1,25 @@
+# Author: Ryan
+# Description: This docker-compose file contains the instructions for building and running the Docker image.
+# Creds: @ChatGPT @jerling2
+
+# Usage:
+#   - Navigate to the directory that contains this file.
+#   - Run the following commands:
+#       - docker-compose build (to build the Docker image)
+#       - docker-compose up -d (to run the Docker container in detached mode)
+#       - docker logs -f django_container (to follow the container's logs)
+
+version: '3.8'  # Version of docker-compose
+
+services:
+  app:
+    build:  # Specifies the location of the Dockerfile
+      context: .
+      dockerfile: Dockerfile
+    volumes:  # Directory shared between the container and host
+      - .:/django  # host/path:container/path
+    ports:
+      - 8000:8000  # Links port 8000 on the host to port 8000 on the container
+    image: app:django  # Name of the Docker image
+    container_name: flight_django_container
+    command: python3 manage.py runserver 0.0.0.0:8000  # Command to run on container start
