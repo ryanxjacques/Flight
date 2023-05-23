@@ -3,7 +3,7 @@ CS407 Group Project - Anna, Ryan, Eliza
 
 This is a group project for developing a webapp that tracks and displays flight data for users.
 
-**1. Docker:** First, ensure that you have Docker installed on your system. You can download Docker from here.
+**1. Docker:** First, ensure that you have Docker installed on your system. You can download Docker from [here](https://www.docker.com/products/docker-desktop/).
 
 **2. Clone the Repository:** Clone this repository to your local machine.
 
