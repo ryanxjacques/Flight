@@ -82,5 +82,3 @@ def generate_flight() -> json:
     else:
         print(f"Error: {api_result.status_code} -- {api_result.reason}")
     # ======================== UNCOMMENT TO ACCESS API DATA ===============================
-
-

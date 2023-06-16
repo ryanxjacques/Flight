@@ -1,36 +1,46 @@
-
-
 var map_image_DOM_element = document.getElementById("map_image")
 var canvas = document.getElementById("canvas");
 var ctx = canvas.getContext("2d");
 
-//
-
 function generateGraphic() {
   console.log("generating flight!");
 
-  const output_text = document.getElementById("output_text");
+  // Fetch flight data from the /get_flight/ API
+  fetch('/get_flight/')
+    .then(response => response.json())
+    .then(data => {
+      // Handle the JSON data received from the server
+      console.log(data);
 
-  //
+      const output_text = document.getElementById("output_text");
 
-  var first = [-118.408, 33.942]; //note:
-  var seccond = [-6.27, 53.421]; //these are just examples
-  //need to not have these hardcoded.
+      // Extract the flight information from the data object
+      const departureAirport = data.departure.airport;
+      const arrivalAirport = data.arrival.airport;
 
-  output_text.innerHTML =
-    "Congratulations! Your flight found is from LAX in Los Angeles to DUB in Dublin!";
+      output_text.innerHTML = `Congratulations! Your flight is from ${departureAirport} to ${arrivalAirport}!`;
 
-  ctx.drawImage(map_image_DOM_element, 0, 0, canvas.width, canvas.height);
-  ctx.beginPath();
+      ctx.drawImage(map_image_DOM_element, 0, 0, canvas.width, canvas.height);
+      ctx.beginPath();
 
-  first = normalize(first);
-  seccond = normalize(seccond);
+      // Extract the coordinates from the flight data or use your hardcoded values
+      // TODO: DATA.ARRIVAL.IATA OR DATA.DEPARTURE.IATA GETS THE DATA!
+      var first = [data.departure.longitude, data.departure.latitude];
+      var second = [data.arrival.longitude, data.arrival.latitude];
 
-  ctx.moveTo(first[0], first[1]);
-  console.log(first, seccond);
+      first = normalize(first);
+      second = normalize(second);
 
-  ctx.lineTo(seccond[0], seccond[1]);
-  ctx.stroke();
+      ctx.moveTo(first[0], first[1]);
+      console.log(first, second);
+
+      ctx.lineTo(second[0], second[1]);
+      ctx.stroke();
+    })
+    .catch(error => {
+      console.error('Error:', error);
+      // Handle any errors that occur during the request
+    });
 }
 
 function normalize(coord) {
