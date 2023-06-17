@@ -3,46 +3,71 @@
 <html>
 <head>
     <title>Plane Game</title>
+    <link href='https://fonts.googleapis.com/css?family=Lexend' rel='stylesheet'>
     <style>
-        #game-container {
-            background-color: lightblue;
-            width: 600px;
-            height: 400px;
-            position: relative;
-            border: 1px solid #000;
-            overflow: hidden;
-        }
+    body {
+        background-color: black;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+    }
 
-        #player-image {
-            position: absolute;
-            top: 50%;
-            left: 0;
-            width: 50px;
-        }
+    #word-container {
+      margin: 30px;
+      color: lightblue;
+      font-family: Lexend;
+    }
 
-        .obstacle {
-            position: absolute;
-        }
+    #game-container {
+        background-color: lightblue;
+        width: 600px;
+        height: 400px;
+        position: relative;
+        border: 1px solid #000;
+        overflow: hidden;
+    }
 
-        .cloud-image {
-            width: 50px;
-            height: 50px;
-        }
+    #player-image {
+        position: absolute;
+        top: 50%;
+        left: 0;
+        width: 50px;
+    }
 
-        .bird-image {
-            width: 50px;
-            height: 30px;
-        }
+    .obstacle {
+        position: absolute;
+    }
 
-        #score {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-        }
+    .cloud-image {
+        width: 60px;
+        height: 50px;
+    }
 
-    </style>
+    .bird-image {
+        width: 50px;
+        height: 30px;
+    }
+
+    #score {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+    }
+
+
+
+</style>
 </head>
 <body>
+
+  <div id="word-container">
+      <h3>Use the up and down arrow keys to dodge obstacles.</h3>
+      <h3>If you hit one, you're out.</h3>
+      <h3>Try to stay in the game as long as possible.</h3>
+      <h3>Good luck!</h3>
+  </div>
+
     <div id="game-container">
         <img src="{% static 'graphics/player.png' %}" alt="Player" id="player-image"/>
 
@@ -52,10 +77,14 @@
     </div>
 
     <script>
-    // Set the base URL for static files
+
+    // Store the start time
+    let startTime = Date.now();
+
+    // Set the base URL for static files (needs to work with Django)
     const staticBaseURL = "{% get_static_prefix %}";
 
-    // Get references to the player, cloud images, and bird container
+    // Get references to the player (plane), cloud images, and bird container
     const playerImage = document.getElementById('player-image');
     const birdContainer = document.getElementById('bird-container');
 
@@ -67,29 +96,27 @@
     const gameWidth = 600;
     const gameHeight = 400;
 
-    // Define the game state
+    // Defining game state
     let gameRunning = true;
     let score = 0;
-    let obstacleSpeed = 5; // Adjust this value to control the speed of obstacles
+    let obstacleSpeed = 5; // this value controls the speed of obstacles
 
-    // Function to move the player image
+    // Function to move player image
     function movePlayer(directionY) {
         if (!gameRunning) return;
 
         playerY += directionY;
 
-        // Restrict the player image from going out of bounds
+        // Restricts player from going out of bounds
         playerY = Math.max(0, Math.min(playerY, gameHeight - playerImage.height));
 
-        // Update the position of the player image
+        // Updates position of the player image
         playerImage.style.top = playerY + 'px';
 
         checkCollisions();
     }
 
-    // ... Rest of your JavaScript code ...
-
-    // Function to create a new cloud
+    // Create a new cloud
     function createCloud() {
         const cloudImage = new Image();
         cloudImage.onload = function () {
@@ -104,7 +131,7 @@
         cloudImage.src = staticBaseURL + "graphics/cloud.png";
     }
 
-    // Function to create a new bird
+    // Create a new bird
     function createBird() {
         const birdImage = new Image();
         birdImage.onload = function () {
@@ -119,7 +146,7 @@
         birdImage.src = staticBaseURL + "graphics/bird.png";
     }
 
-    // Function to move obstacles
+    // Move obstacles
     function moveObstacles() {
         const obstacles = Array.from(document.getElementsByClassName('obstacle'));
         for (const obstacle of obstacles) {
@@ -132,8 +159,7 @@
         }
     }
 
-    let startTime = Date.now(); // Add this variable to store the start time
-
+    // Update score
     function updateScore() {
         const currentTime = Date.now();
         const elapsedTime = Math.floor((currentTime - startTime) / 1000); // Calculate elapsed time in seconds
@@ -141,7 +167,7 @@
         document.getElementById('score').textContent = 'Score: ' + score;
     }
 
-    // Function to check collisions with obstacles
+    // Check collisions with obstacles (still not always accurate)
     function checkCollisions() {
         const obstacles = Array.from(document.getElementsByClassName('obstacle'));
         const playerRight = playerImage.offsetLeft + playerImage.offsetWidth;
@@ -185,7 +211,7 @@
         }
     }
 
-    // Function to end the game
+    // Ends the game
     function endGame() {
         gameRunning = false;
         alert('Game Over! Your score: ' + score);
@@ -204,10 +230,10 @@
     function gameLoop() {
         if (!gameRunning) return;
 
-        // Move obstacles
         moveObstacles();
 
-        // Create new obstacles at random intervals
+        // Creating new obstacles at random times
+        // Increase number values to increase number of obstacles
         if (Math.random() < 0.01) {
             createCloud();
         }
@@ -215,14 +241,14 @@
             createBird();
         }
 
-        // Update the score
         updateScore();
 
         requestAnimationFrame(gameLoop);
     }
 
-    // Start the game loop
+    // Starting the game loop
     gameLoop();
     </script>
+
 </body>
 </html>
