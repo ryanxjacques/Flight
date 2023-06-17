@@ -27,7 +27,6 @@ def generate_flight() -> json:
 
     # check if the request was successful
     if api_result.status_code == 200:
-        print("Request successful!")
         # extract the response data as a dictionary
         api_response = api_result.json()
         # ======================== UNCOMMENT TO ACCESS API DATA ===============================
