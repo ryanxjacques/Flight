@@ -1,0 +1,228 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Plane Game</title>
+    <style>
+        #game-container {
+            background-color: lightblue;
+            width: 600px;
+            height: 400px;
+            position: relative;
+            border: 1px solid #000;
+            overflow: hidden;
+        }
+
+        #player-image {
+            position: absolute;
+            top: 50%;
+            left: 0;
+            width: 50px;
+        }
+
+        .obstacle {
+            position: absolute;
+        }
+
+        .cloud-image {
+            width: 50px;
+            height: 50px;
+        }
+
+        .bird-image {
+            width: 50px;
+            height: 30px;
+        }
+
+        #score {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+        }
+
+    </style>
+</head>
+<body>
+    <div id="game-container">
+        <img src="{% static 'graphics/player.png' %}" alt="Player" id="player-image"/>
+
+        <div id="score">Score: 0</div>
+
+        <div id="bird-container"></div>
+    </div>
+
+    <script>
+    // Set the base URL for static files
+    const staticBaseURL = "{% get_static_prefix %}";
+
+    // Get references to the player, cloud images, and bird container
+    const playerImage = document.getElementById('player-image');
+    const birdContainer = document.getElementById('bird-container');
+
+    // Set the initial position of the player image
+    let playerY = 0;
+    playerImage.style.top = playerY + 'px';
+
+    // Set the width and height of the game container
+    const gameWidth = 600;
+    const gameHeight = 400;
+
+    // Define the game state
+    let gameRunning = true;
+    let score = 0;
+    let obstacleSpeed = 5; // Adjust this value to control the speed of obstacles
+
+    // Function to move the player image
+    function movePlayer(directionY) {
+        if (!gameRunning) return;
+
+        playerY += directionY;
+
+        // Restrict the player image from going out of bounds
+        playerY = Math.max(0, Math.min(playerY, gameHeight - playerImage.height));
+
+        // Update the position of the player image
+        playerImage.style.top = playerY + 'px';
+
+        checkCollisions();
+    }
+
+    // ... Rest of your JavaScript code ...
+
+    // Function to create a new cloud
+    function createCloud() {
+        const cloudImage = new Image();
+        cloudImage.onload = function () {
+            const obstacleTop = Math.floor(Math.random() * gameHeight);
+            const obstacleLeft = gameWidth;
+            cloudImage.style.top = obstacleTop + 'px';
+            cloudImage.style.left = obstacleLeft + 'px';
+            cloudImage.className = 'obstacle cloud-image';
+            document.getElementById('game-container').appendChild(cloudImage);
+        };
+        cloudImage.alt = 'Cloud';
+        cloudImage.src = staticBaseURL + "graphics/cloud.png";
+    }
+
+    // Function to create a new bird
+    function createBird() {
+        const birdImage = new Image();
+        birdImage.onload = function () {
+            const obstacleTop = Math.floor(Math.random() * gameHeight);
+            const obstacleLeft = gameWidth;
+            birdImage.style.top = obstacleTop + 'px';
+            birdImage.style.left = obstacleLeft + 'px';
+            birdImage.className = 'obstacle bird-image';
+            birdContainer.appendChild(birdImage);
+        };
+        birdImage.alt = 'Bird';
+        birdImage.src = staticBaseURL + "graphics/bird.png";
+    }
+
+    // Function to move obstacles
+    function moveObstacles() {
+        const obstacles = Array.from(document.getElementsByClassName('obstacle'));
+        for (const obstacle of obstacles) {
+            const obstacleX = parseInt(obstacle.style.left);
+            if (obstacleX + obstacle.width <= 0) {
+                obstacle.parentNode.removeChild(obstacle);
+            } else {
+                obstacle.style.left = obstacleX - obstacleSpeed + 'px';
+            }
+        }
+    }
+
+    let startTime = Date.now(); // Add this variable to store the start time
+
+    function updateScore() {
+        const currentTime = Date.now();
+        const elapsedTime = Math.floor((currentTime - startTime) / 1000); // Calculate elapsed time in seconds
+        score = elapsedTime; // Update the score
+        document.getElementById('score').textContent = 'Score: ' + score;
+    }
+
+    // Function to check collisions with obstacles
+    function checkCollisions() {
+        const obstacles = Array.from(document.getElementsByClassName('obstacle'));
+        const playerRight = playerImage.offsetLeft + playerImage.offsetWidth;
+        const playerBottom = playerY + playerImage.offsetHeight;
+
+        for (const obstacle of obstacles) {
+            const obstacleLeft = obstacle.offsetLeft;
+            const obstacleRight = obstacleLeft + obstacle.offsetWidth;
+            const obstacleTop = obstacle.offsetTop;
+            const obstacleBottom = obstacleTop + obstacle.offsetHeight;
+
+            if (
+                playerY < obstacleBottom &&
+                playerBottom > obstacleTop &&
+                playerImage.offsetLeft < obstacleRight &&
+                playerRight > obstacleLeft
+            ) {
+                endGame();
+                return;
+            }
+
+            if (
+                playerBottom >= obstacleTop &&
+                playerY < obstacleTop &&
+                playerImage.offsetLeft < obstacleRight &&
+                playerRight > obstacleLeft
+            ) {
+                endGame();
+                return;
+            }
+
+            if (
+                playerY <= obstacleBottom &&
+                playerBottom > obstacleBottom &&
+                playerImage.offsetLeft < obstacleRight &&
+                playerRight > obstacleLeft
+            ) {
+                endGame();
+                return;
+            }
+        }
+    }
+
+    // Function to end the game
+    function endGame() {
+        gameRunning = false;
+        alert('Game Over! Your score: ' + score);
+    }
+
+    // Event listener for arrow key presses
+    document.addEventListener('keydown', (event) => {
+        if (event.key === 'ArrowUp') {
+            movePlayer(-10);
+        } else if (event.key === 'ArrowDown') {
+            movePlayer(10);
+        }
+    });
+
+    // Game loop
+    function gameLoop() {
+        if (!gameRunning) return;
+
+        // Move obstacles
+        moveObstacles();
+
+        // Create new obstacles at random intervals
+        if (Math.random() < 0.01) {
+            createCloud();
+        }
+        if (Math.random() < 0.006) {
+            createBird();
+        }
+
+        // Update the score
+        updateScore();
+
+        requestAnimationFrame(gameLoop);
+    }
+
+    // Start the game loop
+    gameLoop();
+    </script>
+</body>
+</html>

@@ -27,7 +27,8 @@ urlpatterns = [
     path('main.html', views.main_view, name='main'),
     path('get_flight/', get_flight, name='get_flight'),
     path('static/graphics/airports.png', RedirectView.as_view(url=settings.STATIC_URL +
-                                                                  'graphics/airports.png', permanent=True))
+                                                                  'graphics/airports.png', permanent=True)),
+    path('game.html', views.game_view, name='game')
 
 ]
 

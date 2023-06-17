@@ -6,6 +6,9 @@ from flight.flightAPI import generate_flight
 def intro_view(request):
     return render(request, 'intro.html')
 
+def game_view(request):
+    return render(request, 'game.html')
+
 def main_view(request):
     return render(request, 'main.html')
 

@@ -79,6 +79,23 @@ a {
   animation: spin-left 20s linear infinite;
 }
 
+.blink-image {
+  animation: blink 1s infinite !important;
+}
+
+
+@keyframes blink {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
 @keyframes spin-left {
   0% {
     transform: rotate(0deg);
